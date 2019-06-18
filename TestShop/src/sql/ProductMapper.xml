@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProductMapper">
+ 	
+ 	
+	<resultMap id="productSelectMap" type="product">
+		<result property="prodNo" 		column="prod_no" 			jdbcType="INTEGER"/>
+		<result property="prodName"		column="prod_name" 			jdbcType="VARCHAR" />
+		<result property="prodDetail" 	column="prod_detail" 		jdbcType="VARCHAR" />
+		<result property="manuDate" 	column="manufacture_day" 	jdbcType="VARCHAR" />
+		<result property="price" 		column="price" 				jdbcType="INTEGER" />
+		<result property="fileName" 	column="image_file" 		jdbcType="VARCHAR" />
+		<result property="regDate" 		column="reg_date" 			jdbcType="DATE" />
+		<result property="proTranCode" 	column="tran_status_code" 	jdbcType="CHAR" />
+		<result property="prodQuantity" 	column="prodquantity" 	jdbcType="INTEGER" />
+		<result property="prodTranNo" 	column="tran_no" 	jdbcType="INTEGER" />
+		
+	</resultMap>
+	
+	
+	<!-- SQL : INSERT -->
+	<insert 	id="addProduct"		parameterType="product" >
+	 	INSERT
+		INTO product ( prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity) 
+		VALUES	 (	seq_product_prod_no.nextval , #{prodName} , #{prodDetail:VARCHAR} , 
+					TO_DATE(#{manuDate:VARCHAR},'YYYY-MM-DD') ,
+					<if test="price==0">null</if>
+					<if test="price!=0">#{price}</if>, 
+					#{fileName:VARCHAR} , SYSDATE, #{prodQuantity} )
+	 </insert>
+	 
+	 <!-- SQL : SELECT ONE -->
+	 <select 	id="getProduct"	parameterType="int"	resultMap="productSelectMap">
+		SELECT
+		prod_no , prod_name , prod_detail , manufacture_day , price, image_file,  reg_date , prodquantity 	
+		FROM product 
+		WHERE prod_no = #{value}
+	 </select>
+	 
+	 <select 	id="getProduct2"	parameterType="int"	resultMap="productSelectMap">
+		SELECT
+		p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file,  p.reg_date , p.prodquantity, t.tran_no 	
+		FROM product p, transaction t
+		WHERE p.prod_no=t.prod_no(+) AND t.tran_no = #{value}
+	 </select>
+	 
+	 <!-- SQL : UPDATE -->
+	 <update	id="updateProduct"	parameterType="product" >
+	   	UPDATE product
+	   	<set>
+	   		prod_name 		= #{prodName} ,
+			prod_detail		= #{prodDetail},
+			manufacture_day = TO_DATE(#{manuDate},'YYYY-MM-DD'),
+			price	 		= #{price} ,
+			image_file 		= #{fileName},
+			prodquantity 		= #{prodQuantity}
+	   	</set>
+	   	WHERE prod_no = #{prodNo}
+	 </update>
+	 
+	 
+	 <update	id="updateProdQuantity"	parameterType="product" >
+	   	UPDATE product
+	   	<set>
+			prodquantity 		= #{prodQuantity}
+	   	</set>
+	   	WHERE prod_no = #{prodNo}
+	 </update>
+		 
+	<!-- SQL : SELECT LIST -->
+	<select  id="getProductList"  parameterType="search"	resultMap="productSelectMap">
+		SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity
+												FROM product
+												<where>
+													<if test="searchKeyword != null">
+											 		prod_name LIKE '%'||#{searchKeyword}||'%'
+													</if>
+													<if test="soldOut == 0">
+											 		AND prodquantity != 0
+													</if>
+												</where>
+									
+												
+												<choose>
+													<when test="searchCondition == 1 ">
+														ORDER BY price 
+													</when>
+													<when test="searchCondition == 2 ">
+														ORDER BY price DESC
+													</when>
+													<when test="searchCondition == 3 ">
+														ORDER BY prod_no
+													</when>
+													<when test="searchCondition == 4">
+														ORDER BY prod_no DESC
+													</when>
+													<otherwise>
+														ORDER BY prod_no DESC
+													</otherwise>
+													
+												
+												</choose>
+												
+												) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+	</select>
+
+	 	<!--  위 두번째 subQuery 의  
+	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는
+	 			WHERE ROWNUM <= #{endRowNum} ) 의미이며..
+	 			< 는 keyword 로 &lt; 를	사용.
+
+	 			<![CDATA[  ~~~  ]]> 를 이용하여 아래와 같이 사용  할 수 있다.
+	 			CDATA ==> Character Data 의 의미 Java 에서 \n 같은 특수문자 처리  
+
+				WHERE ROWNUM <![CDATA[ <=]]> #{endRowNum} )
+		-->
+
+
+
+
+	<!-- SQL : SELECT ROW Count -->	 
+	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  SELECT COUNT(*)
+	  FROM(	SELECT prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date, prodquantity	
+					FROM product 
+						<where> 		
+								<if test="searchKeyword !=null ">
+						 		prod_name LIKE '%'||#{searchKeyword}||'%'
+								</if> 
+								<if test="soldOut == 0 ">
+						 		AND prodquantity != 0
+								</if>
+						</where> ) countTable		
+	 </select>
+	 
+</mapper>
