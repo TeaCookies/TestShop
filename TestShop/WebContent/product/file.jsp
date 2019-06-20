@@ -39,6 +39,7 @@
             <!-- 미리보기 영역 -->
             <div id="preview" class="content" style='display:inline;min-width:1200px;'></div>
             
+            
             <!-- multipart 업로드시 영역 -->
             <form id="uploadForm" style="display: none;" />
         </div>
@@ -72,38 +73,64 @@
                         //이 부분을 수정해서 이미지 링크 외 파일명, 사이즈 등의 부가설명을 할 수 있을 것이다.
                         var imgNum = previewIndex++;
                         
-      //          test           ////////////////////////////////////////////////////////////////////////////
+//                      test           ////////////////////////////////////////////////////////////////////////////
 
-//                        $.ajax({
-// 		                    type : 'POST',
-// 		                    enctype : 'multipart/form-data/',
-// 		                    processData : false,
-// 		                    contentType : false,
-// 		                    cache : false,
-// 		                    timeout : 600000,
-// 		                    url : "/product/json/visionTest"+testtest,
-// 		                    dataType : "json" ,
-// 							headers : {
-// 												"Accept" : "application/json",
-// 												"Content-Type" : "application/json"
-// 												},
-// 		                    data : formData,
-// 		                    success : function(JSONData) {
-		                        
-		                    	
-		                    	
-// 		                    }
-// 		                    //전송실패에대한 핸들링은 고려하지 않음
-// 		                }); 
+// 						var req = {
+// 								  "requests":[
+// 									    {
+// 									      "image":{
+// 									        "content":"/9j/7QBEUGhvdG9...image contents...eYxxxzj/Coa6Bax//Z"
+// 									      },
+// 									      "features":[
+// 									        {
+// 									          "type":"LABEL_DETECTION",
+// 									          "maxResults":1
+// 									        }
+// 									      ]
+// 									    }
+// 									  ]
+// 									};
+        				
+                        
+     				   $.ajax( 
+     					 		{
+     								url : "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDaDu7bjQpGLN3nKnUfulB3khHE-iGQap0",
+     								method : "POST"{
+     									  "requests":[
+     										    {
+     										    	"image":{
+     										           "source":{
+     										             "imageUri":
+     										               "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+     										           }
+     										         },
+     										      "features":[
+     										        {
+     										          "type":"WEB_DETECTION",
+     										          "maxResults":1
+     										        }
+     										      ]
+     										    }
+     										  ]
+     										} ,
+     								dataType : "json" ,
+     								enctype : 'multipart/form-data/',
+     								headers : {
+     													"Accept" : "application/json",
+     													"Content-Type" : "application/json",										
+     													},
+     								success : function(JSONData , status) { 					
+     									alert(status);					
+     							}
+     					});
 
 
+
+                          
+                          
+       //           test           ////////////////////////////////////////////////////////////////////////////
                         
-                     var testtest = img.target.result;
-      				alert(testtest);
-      				alert(img.url);
-                        
-                        
-     //           test           ////////////////////////////////////////////////////////////////////////////
+      
                         
                         $("#preview")
                                 .append(
@@ -115,13 +142,15 @@
                                                 + "<a href=\"#\" value=\""
                                                 + imgNum
                                                 + "\" onclick=\"deletePreview(this)\">"
-                                                + "삭제" + "</a>" + "</div>");
-     
+                                                + "삭제" + "</a>" + "</div> ");
 
                         files[imgNum] = file;
                     };
                     reader.readAsDataURL(file);
                 }
+                
+
+  
             } else
                 alert('invalid file input'); // 첨부클릭 후 취소시의 대응책은 세우지 않았다.
         }

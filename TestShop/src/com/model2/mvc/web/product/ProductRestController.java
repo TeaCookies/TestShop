@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,26 +85,36 @@ public class ProductRestController {
 	public void visionTest(@PathVariable String testtest  ) throws FileNotFoundException, IOException {
         
 		System.out.println("레스트 컨트롤러 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		
+		/* base64 encoding */ 
+		byte[] encoded = Base64.encodeBase64(testtest.getBytes()); 
+		/* base64 decoding */ 
+		byte[] decoded = Base64.decodeBase64(encoded); 
+		System.out.println("인코딩 전 : " + testtest); 
+		System.out.println("인코딩 text : " + new String(encoded)); 
+		System.out.println("디코딩 text : " + new String(decoded));
+
+
             
-//		try {
+		try {
 			
 			
-//			List<AnnotateImageRequest> requests = new ArrayList<>();
-//		
-//			ByteString imgBytes = ByteString.readFrom(new FileInputStream(testtest));
-//		
-//			Image img = Image.newBuilder().setContent(imgBytes).build();
-//			Feature feat = Feature.newBuilder().setType(Type.WEB_DETECTION).build();
-//			AnnotateImageRequest request = AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
-//			requests.add(request);
-//		
-//			try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
-//				System.out.println("리퀘스트 확인===========================\n"+client.batchAnnotateImages(requests));
-//				BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
-//				System.out.println("리퀘스트 확인=======================\n"
-//				+response.toString().substring(      (   response.toString().indexOf("description: ")   )   ,   (   response.toString().indexOf("}")   )  ));
-//				
-//			    List<AnnotateImageResponse> responses = response.getResponsesList();
+			List<AnnotateImageRequest> requests = new ArrayList<>();
+		
+			ByteString imgBytes = ByteString.readFrom(new FileInputStream(new String(decoded)));
+		
+			Image img = Image.newBuilder().setContent(imgBytes).build();
+			Feature feat = Feature.newBuilder().setType(Type.WEB_DETECTION).build();
+			AnnotateImageRequest request = AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
+			requests.add(request);
+		
+			try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
+				System.out.println("리퀘스트 확인===========================\n"+client.batchAnnotateImages(requests));
+				BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
+				System.out.println("리퀘스트 확인=======================\n"
+				+response.toString().substring(      (   response.toString().indexOf("description: ")   )   ,   (   response.toString().indexOf("}")   )  ));
+				
+			    List<AnnotateImageResponse> responses = response.getResponsesList();
 
 			    
 			    
@@ -129,10 +140,10 @@ public class ProductRestController {
 		//////////////////////////////////
 		
 		
-//			}
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
     }
         
  
