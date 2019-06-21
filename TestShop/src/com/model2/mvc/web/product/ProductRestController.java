@@ -82,26 +82,26 @@ public class ProductRestController {
     
 	
 	@RequestMapping( value="json/visionTest/{testtest}"  )
-	public void visionTest(@PathVariable String testtest  ) throws FileNotFoundException, IOException {
+	public Map visionTest(@PathVariable String testtest  ) throws FileNotFoundException, IOException {
         
 		System.out.println("레스트 컨트롤러 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		
-		/* base64 encoding */ 
-		byte[] encoded = Base64.encodeBase64(testtest.getBytes()); 
-		/* base64 decoding */ 
-		byte[] decoded = Base64.decodeBase64(encoded); 
-		System.out.println("인코딩 전 : " + testtest); 
-		System.out.println("인코딩 text : " + new String(encoded)); 
-		System.out.println("디코딩 text : " + new String(decoded));
+//		/* base64 encoding */ 
+//		byte[] encoded = Base64.encodeBase64(testtest.getBytes()); 
+//		/* base64 decoding */ 
+//		byte[] decoded = Base64.decodeBase64(encoded); 
+//		System.out.println("인코딩 전 : " + testtest); 
+//		System.out.println("인코딩 text : " + new String(encoded)); 
+//		System.out.println("디코딩 text : " + new String(decoded));
 
-
-            
+		Map map = new HashMap();
+           
 		try {
 			
 			
 			List<AnnotateImageRequest> requests = new ArrayList<>();
 		
-			ByteString imgBytes = ByteString.readFrom(new FileInputStream(new String(decoded)));
+			ByteString imgBytes = ByteString.readFrom(new FileInputStream(new String(testtest)));
 		
 			Image img = Image.newBuilder().setContent(imgBytes).build();
 			Feature feat = Feature.newBuilder().setType(Type.WEB_DETECTION).build();
@@ -114,7 +114,11 @@ public class ProductRestController {
 				System.out.println("리퀘스트 확인=======================\n"
 				+response.toString().substring(      (   response.toString().indexOf("description: ")   )   ,   (   response.toString().indexOf("}")   )  ));
 				
-			    List<AnnotateImageResponse> responses = response.getResponsesList();
+				testtest =response.toString().substring(      (   response.toString().indexOf("description: ")   )   ,   (   response.toString().indexOf("}")   )  );
+				
+				map.put("test",testtest);
+				
+				List<AnnotateImageResponse> responses = response.getResponsesList();
 
 			    
 			    
@@ -144,6 +148,8 @@ public class ProductRestController {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		return map;
+		
     }
         
  

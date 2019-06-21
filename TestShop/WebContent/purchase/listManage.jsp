@@ -92,7 +92,7 @@
 								success : function(JSONData , status) {
 					
 									//alert(status);
-									//alert("JSONData : \n"+JSONData);
+									console.log("JSONData : \n"+JSON.stringify(JSONData));
 									if ($.trim(JSONData.paymentOption) == '0' ){JSONData.paymentOption="현금결제"}
 									if ($.trim(JSONData.paymentOption) == '1' ){JSONData.paymentOption="카드결제"}
 									

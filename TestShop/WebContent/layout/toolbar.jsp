@@ -63,7 +63,7 @@
 		                         <li><a href="#">판매상품관리</a></li>
 		                         <li><a href="#">주문관리</a></li>
 <!-- 		                         <li class="divider"></li> -->
-<!-- 		                         <li><a href="#">etc..</a></li> -->
+		                         <li><a href="#">테스트</a></li>
 		                     </ul>
 		                </li>
 	                 </c:if>
@@ -156,6 +156,10 @@
 	 	
 	 	$( "a:contains('주문관리')" ).on("click" , function() {
 	 		$(self.location).attr("href","/purchase/listManage");
+		}); 
+	 	
+	 	$( "a:contains('테스트')" ).on("click" , function() {
+	 		self.location = "../product/file2.jsp"
 		}); 
 	 	
 	 	

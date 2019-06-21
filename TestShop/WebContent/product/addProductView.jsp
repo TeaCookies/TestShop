@@ -184,14 +184,14 @@
 		    </div>
 		  </div>
 		  
-<!-- 		  <div class="form-group"> -->
-<!-- 		    <label for="file" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label> -->
-<!-- 		    <div class="col-sm-4"> -->
-<!-- 		      <input type="file" class="form-control" id="file" name="file" placeholder="상품이미지"> -->
-<!-- 		    </div> -->
-<!-- 		  </div> -->
+		  <div class="form-group">
+		    <label for="file" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
+		    <div class="col-sm-4">
+		      <input type="file" class="form-control" id="file" name="file" placeholder="상품이미지">
+		    </div>
+		  </div>
 
-<jsp:include page="file.jsp" />
+
 		  
 
 		  
