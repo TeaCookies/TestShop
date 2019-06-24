@@ -159,7 +159,7 @@
 		}); 
 	 	
 	 	$( "a:contains('Å×½ºÆ®')" ).on("click" , function() {
-	 		self.location = "../product/file2.jsp"
+	 		self.location = "../product/test.jsp"
 		}); 
 	 	
 	 	
