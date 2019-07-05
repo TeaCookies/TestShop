@@ -15,5 +15,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Vision"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/base64"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spring-framework-4.0.9"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

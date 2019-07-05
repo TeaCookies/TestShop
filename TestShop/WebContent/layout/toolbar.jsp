@@ -63,7 +63,11 @@
 		                         <li><a href="#">판매상품관리</a></li>
 		                         <li><a href="#">주문관리</a></li>
 <!-- 		                         <li class="divider"></li> -->
-		                         <li><a href="#">테스트</a></li>
+		                         <li><a href="#">비전</a></li>
+		                         <li><a href="#">지도</a></li>
+		                         <li><a href="#">지도마커여러개</a></li>
+		                         <li><a href="#">경로</a></li>
+		                         <li><a href="#">달력</a></li>
 		                     </ul>
 		                </li>
 	                 </c:if>
@@ -158,10 +162,29 @@
 	 		$(self.location).attr("href","/purchase/listManage");
 		}); 
 	 	
-	 	$( "a:contains('테스트')" ).on("click" , function() {
-	 		self.location = "../product/test.jsp"
+	 	//////////////////////////////////////////////////////////////////////////////////
+	 	$( "a:contains('비전')" ).on("click" , function() {
+	 		self.location = "../product/testVision.jsp"
 		}); 
 	 	
+	 	$( "a:contains('지도')" ).on("click" , function() {
+	 		self.location = "../product/testMapGoogle.jsp"
+		}); 
+	 	
+	 	$( "a:contains('마커')" ).on("click" , function() {
+	 		self.location = "../product/testMapGoogleMarker.jsp"
+		}); 
+	 	
+	 	$( "a:contains('경로')" ).on("click" , function() {
+	 		self.location = "../product/testMapGooglePoly.jsp"
+		}); 
+	 	
+	 	$( "a:contains('달력')" ).on("click" , function() {
+	 		self.location = "../product/testCalendar.jsp"
+		}); 
+	 	
+
+	 	//////////////////////////////////////////////////////////////////////////////////
 	 	
 	 	$( "a:contains('상품검색')" ).on("click" , function() {
 	 		self.location = "/product/listProduct?menu=search"

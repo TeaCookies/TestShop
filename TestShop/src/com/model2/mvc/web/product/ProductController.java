@@ -61,8 +61,21 @@ public class ProductController {
 	//@Value("#{commonProperties['pageSize'] ?: 2}")
 	int pageSize;
 	
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//@RequestMapping("/addProduct.do")
+	@RequestMapping( value="mapTest", method=RequestMethod.POST )
+	public void mapTest( ) throws Exception {
+
+		System.out.println("========================test===============================");
+		
+		
+		
+
+		System.out.println("========================test===============================");
+	}
 	
-	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//@RequestMapping("/addProductView.do")
 	@RequestMapping( value="addProduct", method=RequestMethod.GET )
